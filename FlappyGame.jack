@@ -1,0 +1,99 @@
+class FlappyGame {
+    field Bird bird;
+    field Pipe pipe;
+    field int score;
+    field boolean gameOver;
+
+    constructor FlappyGame new() {
+        let bird = Bird.new(80, 120);
+        let pipe = Pipe.new(450, 100);
+        let score = 0;
+        let gameOver = false;
+        
+        // Configuración inicial del HUD con la línea separadora
+        do Output.moveCursor(0, 1); 
+        do Output.printString("Score: 0");
+        do Screen.drawLine(0, 14, 511, 14);
+        
+        return this;
+    }
+
+    method void dispose() {
+        do bird.dispose();
+        do pipe.dispose();
+        do Memory.deAlloc(this);
+        return;
+    }
+
+    method void run() {
+        var char key;
+        var boolean justJumped;
+        
+        let justJumped = false;
+
+        while (~gameOver) {
+            let key = Keyboard.keyPressed();
+            
+            if ((key = 32) & (~justJumped)) { 
+                do bird.jump();
+                let justJumped = true;
+            }
+            if (key = 0) {
+                let justJumped = false;
+            }
+            
+            do bird.move();
+            do pipe.move();
+            
+            do checkCollisions();
+            do updateScore();
+            
+            do Sys.wait(50); 
+        }
+        
+        do Output.moveCursor(11, 26);
+        do Output.printString("GAME OVER!");
+        return;
+    }
+
+    method void checkCollisions() {
+        var int bx, by, bs;
+        var int px, pw, pgy, pgs;
+        
+        let bx = bird.getX();
+        let by = bird.getY();
+        let bs = bird.getSize();
+        
+        let px = pipe.getX();
+        let pw = pipe.getWidth();
+        let pgy = pipe.getGapY();
+        let pgs = pipe.getGapSize();
+        
+        // Colisión con el techo (15) o el suelo (255)
+        if ((by = 15) | ((by + bs) = 255)) {
+            let gameOver = true;
+        }
+        
+        if (((bx + bs) > px) & (bx < (px + pw))) {
+            if ((by < pgy) | ((by + bs) > (pgy + pgs))) {
+                let gameOver = true;
+            }
+        }
+        return;
+    }
+
+method void updateScore() {
+        var int px, bx;
+        
+        let px = pipe.getX();
+        let bx = bird.getX();
+        
+        // Suma un punto si el tubo acaba de cruzar al pájaro en este fotograma exacto
+        if ((px < bx) & (px > (bx - 4))) {
+            let score = score + 1;
+            do Output.moveCursor(0, 8); 
+            do Output.printInt(score);
+        }
+        return;
+    }
+}

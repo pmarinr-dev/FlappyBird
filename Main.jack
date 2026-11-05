@@ -1,0 +1,33 @@
+class Main {
+    /** Bucle infinito que gestiona múltiples partidas, asegurando la liberación de memoria entre cada una. */
+    function void main() {
+        var FlappyGame game;
+        var char key;
+        
+        while (true) {
+            // 1. Instancia una partida completamente nueva (restaurando el estado inicial)
+            let game = FlappyGame.new();
+            
+            // 2. Ejecuta el bucle de la partida hasta que ocurre un Game Over
+            do game.run();
+            
+            // 3. Libera inmediatamente la memoria de la partida finalizada para evitar desbordamientos
+            do game.dispose();
+            
+            // 4. Mensaje para reiniciar la partida
+            do Output.moveCursor(13, 22);
+            do Output.printString("Press R to Restart");
+            
+            // 5. Espera activa hasta que el usuario presione la tecla 'R' (código ASCII 82)
+            let key = 0;
+            while (~(key = 82)) {
+                let key = Keyboard.keyPressed();
+            }
+            
+            // 6. Limpia la pantalla gráfica y de texto antes de la siguiente partida
+            do Screen.clearScreen();
+        }
+        
+        return;
+    }
+}

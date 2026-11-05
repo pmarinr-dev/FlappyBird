@@ -1,0 +1,65 @@
+class Pipe {
+    field int x;
+    field int gapY;          
+    field int gapSize;       
+    field int width;         
+
+    constructor Pipe new(int startX, int startGapY) {
+        let x = startX;
+        let gapY = startGapY;
+        let gapSize = 70;
+        let width = 25;
+        do draw();
+        return this;
+    }
+
+    method void dispose() {
+        do Memory.deAlloc(this);
+        return;
+    }
+
+    method void draw() {
+        do Screen.setColor(true);
+        // El tubo superior ahora empieza en Y = 15 en vez de 0
+        if (gapY > 15) {
+            do Screen.drawRectangle(x, 15, x + width, gapY);
+        }
+        if ((gapY + gapSize) < 255) {
+            do Screen.drawRectangle(x, gapY + gapSize, x + width, 255);
+        }
+        return;
+    }
+
+    method void erase() {
+        do Screen.setColor(false);
+        // Borrado respetando el límite de Y = 15
+        if (gapY > 15) {
+            do Screen.drawRectangle(x, 15, x + width, gapY);
+        }
+        if ((gapY + gapSize) < 255) {
+            do Screen.drawRectangle(x, gapY + gapSize, x + width, 255);
+        }
+        return;
+    }
+
+    method void move() {
+        do erase();
+        let x = x - 3; 
+        
+        if (x < 0) {
+            let x = 511 - width;
+            if (gapY = 100) { let gapY = 50; }
+            else { 
+                if (gapY = 50) { let gapY = 140; }
+                else { let gapY = 100; }
+            }
+        }
+        do draw();
+        return;
+    }
+
+    method int getX() { return x; }
+    method int getWidth() { return width; }
+    method int getGapY() { return gapY; }
+    method int getGapSize() { return gapSize; }
+}

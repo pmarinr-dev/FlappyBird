@@ -1,0 +1,60 @@
+class Bird {
+    field int x, y;          
+    field int velocity;      
+    field int size;          
+
+    constructor Bird new(int startX, int startY) {
+        let x = startX;
+        let y = startY;
+        let velocity = 0;
+        let size = 15;
+        do draw();
+        return this;
+    }
+
+    method void dispose() {
+        do Memory.deAlloc(this);
+        return;
+    }
+
+    method void draw() {
+        do Screen.setColor(true);
+        do Screen.drawRectangle(x, y, x + size, y + size);
+        return;
+    }
+
+    method void erase() {
+        do Screen.setColor(false);
+        do Screen.drawRectangle(x, y, x + size, y + size);
+        return;
+    }
+
+    method void jump() {
+        let velocity = -5; 
+        return;
+    }
+
+    method void move() {
+        do erase();
+        
+        let velocity = velocity + 1; 
+        let y = y + velocity;
+        
+        // Límites de la pantalla ajustados para respetar el HUD
+        if (y < 15) { 
+            let y = 15; 
+            let velocity = 0; 
+        }
+        if ((y + size) > 255) { 
+            let y = 255 - size; 
+            let velocity = 0; 
+        }
+        
+        do draw();
+        return;
+    }
+
+    method int getX() { return x; }
+    method int getY() { return y; }
+    method int getSize() { return size; }
+}
