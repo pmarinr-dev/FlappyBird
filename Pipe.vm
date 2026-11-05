@@ -1,0 +1,180 @@
+function Pipe.new 0
+push constant 4
+call Memory.alloc 1
+pop pointer 0
+push argument 0
+pop this 0
+push argument 1
+pop this 1
+push constant 70
+pop this 2
+push constant 25
+pop this 3
+push pointer 0
+call Pipe.draw 1
+pop temp 0
+push pointer 0
+return
+function Pipe.dispose 0
+push argument 0
+pop pointer 0
+push pointer 0
+call Memory.deAlloc 1
+pop temp 0
+push constant 0
+return
+function Pipe.draw 0
+push argument 0
+pop pointer 0
+push constant 0
+not
+call Screen.setColor 1
+pop temp 0
+push this 1
+push constant 15
+gt
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push this 0
+push constant 15
+push this 0
+push this 3
+add
+push this 1
+call Screen.drawRectangle 4
+pop temp 0
+label IF_FALSE0
+push this 1
+push this 2
+add
+push constant 255
+lt
+if-goto IF_TRUE1
+goto IF_FALSE1
+label IF_TRUE1
+push this 0
+push this 1
+push this 2
+add
+push this 0
+push this 3
+add
+push constant 255
+call Screen.drawRectangle 4
+pop temp 0
+label IF_FALSE1
+push constant 0
+return
+function Pipe.erase 0
+push argument 0
+pop pointer 0
+push constant 0
+call Screen.setColor 1
+pop temp 0
+push this 1
+push constant 15
+gt
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push this 0
+push constant 15
+push this 0
+push this 3
+add
+push this 1
+call Screen.drawRectangle 4
+pop temp 0
+label IF_FALSE0
+push this 1
+push this 2
+add
+push constant 255
+lt
+if-goto IF_TRUE1
+goto IF_FALSE1
+label IF_TRUE1
+push this 0
+push this 1
+push this 2
+add
+push this 0
+push this 3
+add
+push constant 255
+call Screen.drawRectangle 4
+pop temp 0
+label IF_FALSE1
+push constant 0
+return
+function Pipe.move 0
+push argument 0
+pop pointer 0
+push pointer 0
+call Pipe.erase 1
+pop temp 0
+push this 0
+push constant 3
+sub
+pop this 0
+push this 0
+push constant 0
+lt
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push constant 511
+push this 3
+sub
+pop this 0
+push this 1
+push constant 100
+eq
+if-goto IF_TRUE1
+goto IF_FALSE1
+label IF_TRUE1
+push constant 50
+pop this 1
+goto IF_END1
+label IF_FALSE1
+push this 1
+push constant 50
+eq
+if-goto IF_TRUE2
+goto IF_FALSE2
+label IF_TRUE2
+push constant 140
+pop this 1
+goto IF_END2
+label IF_FALSE2
+push constant 100
+pop this 1
+label IF_END2
+label IF_END1
+label IF_FALSE0
+push pointer 0
+call Pipe.draw 1
+pop temp 0
+push constant 0
+return
+function Pipe.getX 0
+push argument 0
+pop pointer 0
+push this 0
+return
+function Pipe.getWidth 0
+push argument 0
+pop pointer 0
+push this 3
+return
+function Pipe.getGapY 0
+push argument 0
+pop pointer 0
+push this 1
+return
+function Pipe.getGapSize 0
+push argument 0
+pop pointer 0
+push this 2
+return
