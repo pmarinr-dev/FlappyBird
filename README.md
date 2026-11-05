@@ -15,3 +15,8 @@
 
 ## Controles
 * **Barra Espaciadora**: Saltar / Volar.
+  
+## Enlaces
+* Repositorio: https://github.com/pmarinr-dev/FlappyBird
+
+* Video demostrativo: https://youtu.be/ksS-cdM37Mw
